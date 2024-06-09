@@ -49,6 +49,8 @@ public abstract class AbstractTelegramClass {
 
     public abstract Map<String, String> headers();
 
+    public abstract AbstractTelegramClass requestId(String value);
+
     public static abstract class Builder<T> {
         private String botToken;
         private long chatId;
@@ -106,7 +108,7 @@ public abstract class AbstractTelegramClass {
         }
 
         public T logger(Logger logger) {
-            this.logger = logger == null ? LoggerFactory.getLogger(AbstractTelegramClass.class) : logger;
+            this.logger = logger == null ? LoggerFactory.getLogger(getClass()) : logger;
             return this.self();
         }
 

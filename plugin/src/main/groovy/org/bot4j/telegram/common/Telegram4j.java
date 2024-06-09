@@ -10,6 +10,8 @@ import org.unify4j.common.String4j;
 import org.unify4j.model.builder.HttpStatusBuilder;
 import org.unify4j.model.builder.HttpWrapBuilder;
 import org.unify4j.model.builder.WrapBuilder;
+import org.unify4j.model.c.HttpHeaders;
+import org.unify4j.model.c.MediaType;
 import org.unify4j.model.response.WrapResponse;
 
 import java.util.HashMap;
@@ -29,7 +31,7 @@ public class Telegram4j extends AbstractTelegramClass {
     @Override
     public WrapResponse<?> sendMessage() {
         if (this.connections.isSkip()) {
-            return new WrapBuilder<>().setStatusCode(HttpStatusBuilder.NOT_IMPLEMENTED).setMessage("Oops! Telegram4j unavailable").build();
+            return new HttpWrapBuilder<>().notImplemented("Oops! Telegram4j unavailable").build();
         }
         WrapResponse<?> verified = this.verify();
         if (!verified.isSuccess()) {
@@ -133,8 +135,20 @@ public class Telegram4j extends AbstractTelegramClass {
     @Override
     public Map<String, String> headers() {
         Map<String, String> header = new HashMap<>();
-        header.put("Content-Type", "application/json");
+        header.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.getName());
         return header;
+    }
+
+    /**
+     * @param value the request_id from client
+     */
+    @Override
+    public Telegram4j requestId(String value) {
+        if (this.options == null) {
+            return this;
+        }
+        this.options.setRequestId(value);
+        return this;
     }
 
     public static class Builder extends AbstractTelegramClass.Builder<Builder> {
