@@ -1,10 +1,10 @@
-package org.bot4j.telegram.model.onlyrd;
+package org.bot4j.telegram.model.rd;
 
 import org.bot4j.telegram.model.builder.TelegramConnectionBuilder;
 import org.bot4j.telegram.model.builder.TelegramOptionBuilder;
 import org.bot4j.telegram.model.enums.TelegramTextMode;
-import org.bot4j.telegram.model.options.TelegramConnections;
-import org.bot4j.telegram.model.options.TelegramOptions;
+import org.bot4j.telegram.model.request.TelegramConnections;
+import org.bot4j.telegram.model.request.TelegramOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.unify4j.common.Class4j;

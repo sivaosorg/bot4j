@@ -1,9 +1,9 @@
-package org.bot4j.slack.model.onlyrd;
+package org.bot4j.slack.model.rd;
 
 import org.bot4j.slack.model.builder.SlackConnectionBuilder;
 import org.bot4j.slack.model.builder.SlackOptionBuilder;
-import org.bot4j.slack.model.options.SlackConnections;
-import org.bot4j.slack.model.options.SlackOptions;
+import org.bot4j.slack.model.request.SlackConnections;
+import org.bot4j.slack.model.request.SlackOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.unify4j.model.response.WrapResponse;

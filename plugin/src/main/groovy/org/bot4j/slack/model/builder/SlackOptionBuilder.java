@@ -1,7 +1,7 @@
 package org.bot4j.slack.model.builder;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.bot4j.slack.model.options.SlackOptions;
+import org.bot4j.slack.model.request.SlackOptions;
 import org.unify4j.common.UniqueId4j;
 
 import java.io.Serializable;

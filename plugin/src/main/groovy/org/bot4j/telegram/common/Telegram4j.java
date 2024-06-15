@@ -3,7 +3,7 @@ package org.bot4j.telegram.common;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
-import org.bot4j.telegram.model.onlyrd.AbstractTelegramClass;
+import org.bot4j.telegram.model.rd.AbstractTelegramClass;
 import org.unify4j.common.Json4j;
 import org.unify4j.common.Object4j;
 import org.unify4j.common.String4j;

@@ -1,4 +1,4 @@
-package org.bot4j.telegram.model.options;
+package org.bot4j.slack.model.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -8,8 +8,8 @@ import java.io.Serializable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TelegramOptions implements Serializable {
-    public TelegramOptions() {
+public class SlackOptions implements Serializable {
+    public SlackOptions() {
         super();
         this.setRequestId(String.valueOf(UniqueId4j.getUniqueId19()));
     }

@@ -1,4 +1,4 @@
-package org.bot4j.telegram.model.options;
+package org.bot4j.telegram.model.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

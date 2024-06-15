@@ -3,7 +3,7 @@ package org.bot4j.slack.common;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
-import org.bot4j.slack.model.onlyrd.AbstractSlackClass;
+import org.bot4j.slack.model.rd.AbstractSlackClass;
 import org.unify4j.common.*;
 import org.unify4j.model.builder.HttpStatusBuilder;
 import org.unify4j.model.builder.HttpWrapBuilder;

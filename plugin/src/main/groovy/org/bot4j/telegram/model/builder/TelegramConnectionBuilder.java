@@ -1,7 +1,7 @@
 package org.bot4j.telegram.model.builder;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.bot4j.telegram.model.options.TelegramConnections;
+import org.bot4j.telegram.model.request.TelegramConnections;
 
 import java.io.Serializable;
 
