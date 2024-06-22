@@ -78,9 +78,9 @@ public class Slack4j extends AbstractSlackClass {
         Map<String, Object> request = this.messageBody();
         Map<String, String> headers = this.headers();
         if (this.connections.isDebugging()) {
-            logger.debug("Slack4j, request_id: {} sending message on URL: {}", this.options.getRequestId(), url);
-            logger.debug("Slack4j, request_id: {} sending request body: {}", this.options.getRequestId(), Json4j.toJson(request));
-            logger.debug("Slack4j, request_id: {} sending request header: {}", this.options.getRequestId(), headers.toString());
+            this.logger.info("Slack4j, request_id: {} sending message on URL: {}", this.options.getRequestId(), url);
+            this.logger.info("Slack4j, request_id: {} sending request body: {}", this.options.getRequestId(), Json4j.toJson(request));
+            this.logger.info("Slack4j, request_id: {} sending request header: {}", this.options.getRequestId(), headers.toString());
         }
         try {
             HttpResponse<JsonNode> caller = Unirest.post(url).headers(headers).body(request).asJson();
