@@ -55,11 +55,20 @@ make jar
 
 ### Upgrading version
 
-- file `gradle.properties`
+- file `gradle.yml`
 
-```sh
-ng.name=bot4j
-ng.version=v1.0.0
+```yaml
+ng:
+  name: bot4j
+  version: v1.0.0
+  enabled_link: false # enable compression and attachment of the external libraries
+  jars:
+    # unify4J: Java 1.8 skeleton library offering a rich toolkit of utility functions
+    # for collections, strings, date/time, JSON, maps, and more.
+    - "./../libs/unify4j-v1.0.0.jar"
+    # alpha4J: is a Java 8 library featuring common data structures and algorithms.
+    # Enhance your projects with efficient and easy-to-use implementations designed for performance and clarity.
+    - "./../libs/alpha4j-v1.0.0.jar"
 ```
 
 ## Integration
@@ -68,17 +77,4 @@ ng.version=v1.0.0
 
 ```gradle
 implementation files('libs/bot4j-v1.0.0.jar') // filename based on ng.name and ng.version
-```
-
-2. Edit file `main Spring Boot application` (optional)
-
-```java
-
-@SpringBootApplication
-@ComponentScan(basePackages = {"org.bot4j"}) // root name of package bot4j
-public class ApiApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(ApiApplication.class, args);
-    }
-}
 ```

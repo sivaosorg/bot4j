@@ -4,6 +4,15 @@
  */
 //file:noinspection VulnerableLibrariesLocal
 //file:noinspection SpellCheckingInspection
+buildscript {
+    repositories {
+        // Use Maven Central for resolving dependencies.
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.yaml:snakeyaml:2.0'
+    }
+}
 
 plugins {
     // Apply the Java Gradle plugin development plugin to add support for developing Gradle plugins
@@ -24,10 +33,38 @@ repositories {
     mavenCentral()
 }
 
-def props = new Properties()
-props.load(new FileInputStream(rootProject.file("gradle.properties")))
-def _name = props.getProperty("ng.name")
-def _version = props.getProperty("ng.version")
+import org.yaml.snakeyaml.Yaml
+
+class NgConfig {
+    String name
+    String version
+    boolean enabledLink
+    List<String> jars
+
+    @SuppressWarnings('GroovyAssignabilityCheck')
+    NgConfig(Map<String, Object> configs) {
+        name = configs.containsKey('name') ? configs['name'] : 'bot4j'
+        version = configs.containsKey('version') ? configs['version'] : 'v1.0.0'
+        enabledLink = configs.containsKey('enabled_link') ? configs['enabled_link'] : false
+        jars = configs.containsKey('jars') ? configs['jars'] : []
+    }
+}
+
+// Define ngConfig as a static global variable
+NgConfig ngConfig = loadNgConfig()
+
+NgConfig loadNgConfig() {
+    def configs = file('gradle.yml')
+    if (configs.exists()) {
+        def yaml = new Yaml()
+        def config = yaml.load(new FileInputStream(configs))
+        println '⌛ Loading NgConfigs configuration via gradle.yml'
+        return new NgConfig(config['ng'] as Map<String, Object>)
+    } else {
+        println '⚠️ gradle.yml not found, using default configuration'
+        return new NgConfig(new HashMap<String, Object>())
+    }
+}
 
 // Define a task to build the Groovy library into a JAR
 tasks.register('buildGroovyJar', Jar) {
@@ -35,8 +72,8 @@ tasks.register('buildGroovyJar', Jar) {
     from 'src/main/groovy'
     // Set the destination directory for the compiled classes
     into('')
-    archiveFileName = "${_name}" + ".jar"
-    version("${_version}")
+    archiveFileName = "${ngConfig.getName()}" + ".jar"
+    version("${ngConfig.getVersion()}")
     include '**/*.groovy'
 }
 
@@ -46,12 +83,37 @@ tasks.named('build') {
 }
 
 tasks.jar {
-    archivesBaseName = "${_name}"
-    version = "${_version}"
+    archivesBaseName = "${ngConfig.getName()}"
+    version = "${ngConfig.getVersion()}"
+
+    // Handle duplicates
+    // <code>
+    // duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    // </code>
+    // Compressing the external JAR files listed in gradle.yml using zipTree if enabled_link is true
+    if (ngConfig.isEnabledLink() && !ngConfig.getJars().isEmpty()) {
+        ngConfig.getJars().each { jar ->
+            println("📦 Jar compressing... [${jar}]")
+            from {
+                zipTree(file(jar))
+            }
+        }
+    } else {
+        println '⚠️ Skipping compression of dependency JAR files...'
+    }
 }
 
 // Add dependencies
 dependencies {
+    // Add the dependencies listed in the gradle.yml file
+    if (!ngConfig.getJars().isEmpty()) {
+        ngConfig.getJars().each { jar ->
+            println("🔄 Jar mounting... [${jar}]")
+            implementation files(jar)
+        }
+    } else {
+        println '⚠️ No JAR files specified in gradle.yml for dependencies.'
+    }
     // Use the awesome Spock testing and specification framework
     testImplementation libs.spock.core
     // Incorporate JUnit Jupiter API version 4.13.2 for unit testing,
@@ -88,11 +150,4 @@ dependencies {
     implementation group: 'com.jayway.jsonpath', name: 'json-path', version: '2.9.0'
     // The "validation-api" library, version 2.0.1.Final, provides tools for validating Java objects according to defined constraints.
     implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
-
-    // unify4J: Java 1.8 skeleton library offering a rich toolkit of utility functions
-    // for collections, strings, date/time, JSON, maps, and more.
-    implementation files('./../libs/unify4j-v1.0.0.jar')
-    // alpha4j: is a Java 8 library featuring common data structures and algorithms.
-    // Enhance your projects with efficient and easy-to-use implementations designed for performance and clarity.
-    implementation files('./../libs/alpha4j-v1.0.0.jar')
 }
