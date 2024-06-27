@@ -35,18 +35,29 @@ repositories {
 
 import org.yaml.snakeyaml.Yaml
 
+class JarConfig {
+    boolean enabled
+    String source
+
+    JarConfig(Map<String, Object> config) {
+        enabled = config['enabled'] ?: false
+        source = config['source'] ?: ''
+    }
+}
+
 class NgConfig {
     String name
     String version
     boolean enabledLink
-    List<String> jars
+    List<JarConfig> jars
 
     @SuppressWarnings('GroovyAssignabilityCheck')
     NgConfig(Map<String, Object> configs) {
         name = configs.containsKey('name') ? configs['name'] : 'bot4j'
-        version = configs.containsKey('version') ? configs['version'] : 'v1.0.0'
+        version = configs.containsKey('version') ? configs['version'] : 'v0.0.0'
         enabledLink = configs.containsKey('enabled_link') ? configs['enabled_link'] : false
-        jars = configs.containsKey('jars') ? configs['jars'] : []
+        // jars = configs.containsKey('jars') ? configs['jars'] : [] // List<String> jars
+        jars = configs.containsKey('jars') ? configs['jars'].collect { new JarConfig(it) } : []
     }
 }
 
@@ -87,15 +98,15 @@ tasks.jar {
     version = "${ngConfig.getVersion()}"
 
     // Handle duplicates
-    // <code>
     // duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    // </code>
     // Compressing the external JAR files listed in gradle.yml using zipTree if enabled_link is true
     if (ngConfig.isEnabledLink() && !ngConfig.getJars().isEmpty()) {
         ngConfig.getJars().each { jar ->
-            println("📦 Jar compressing... [${jar}]")
-            from {
-                zipTree(file(jar))
+            if (jar.isEnabled() && !jar.getSource().isEmpty()) {
+                println("📦 Jar compressing... [${jar.getSource()}]")
+                from {
+                    zipTree(file(jar.getSource()))
+                }
             }
         }
     } else {
@@ -108,8 +119,10 @@ dependencies {
     // Add the dependencies listed in the gradle.yml file
     if (!ngConfig.getJars().isEmpty()) {
         ngConfig.getJars().each { jar ->
-            println("🔄 Jar mounting... [${jar}]")
-            implementation files(jar)
+            if (!jar.getSource().isEmpty()) {
+                println("🔄 Jar mounting... [${jar.getSource()}]")
+                implementation files(jar.getSource())
+            }
         }
     } else {
         println '⚠️ No JAR files specified in gradle.yml for dependencies.'

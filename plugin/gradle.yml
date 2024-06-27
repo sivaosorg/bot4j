@@ -5,7 +5,9 @@ ng:
   jars:
     # unify4J: Java 1.8 skeleton library offering a rich toolkit of utility functions
     # for collections, strings, date/time, JSON, maps, and more.
-    - "./../libs/unify4j-v1.0.0.jar"
+    - enabled: false # enable compression and attachment of the external libraries
+      source: "./../libs/unify4j-v1.0.0.jar"
     # alpha4J: is a Java 8 library featuring common data structures and algorithms.
     # Enhance your projects with efficient and easy-to-use implementations designed for performance and clarity.
-    - "./../libs/alpha4j-v1.0.0.jar"
+    - enabled: true
+      source: "./../libs/alpha4j-v1.0.0.jar"
