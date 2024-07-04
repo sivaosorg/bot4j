@@ -1,5 +1,6 @@
 package org.bot4j.telegram.model.rd;
 
+import org.bot4j.telegram.message.HtmlBuilder;
 import org.bot4j.telegram.message.MarkdownBuilder;
 import org.bot4j.telegram.model.builder.TelegramConnectionBuilder;
 import org.bot4j.telegram.model.builder.TelegramOptionBuilder;
@@ -98,13 +99,20 @@ public abstract class AbstractTelegramClass {
             return this.text(builder.toString());
         }
 
+        public T text(HtmlBuilder builder) {
+            if (builder == null) {
+                return this.self();
+            }
+            return this.text(builder.toString());
+        }
+
         public T parseMode(String mode) {
             this.parseMode = mode;
             return this.self();
         }
 
         public T parseMode(TelegramTextMode mode) {
-            return this.parseMode(mode.name());
+            return this.parseMode(mode.name().toLowerCase());
         }
 
         public T markdownSettings() {
