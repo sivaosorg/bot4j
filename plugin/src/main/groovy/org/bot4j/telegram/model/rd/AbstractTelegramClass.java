@@ -1,5 +1,6 @@
 package org.bot4j.telegram.model.rd;
 
+import org.bot4j.telegram.message.MarkdownBuilder;
 import org.bot4j.telegram.model.builder.TelegramConnectionBuilder;
 import org.bot4j.telegram.model.builder.TelegramOptionBuilder;
 import org.bot4j.telegram.model.enums.TelegramTextMode;
@@ -90,6 +91,13 @@ public abstract class AbstractTelegramClass {
             return this.self();
         }
 
+        public T text(MarkdownBuilder builder) {
+            if (builder == null) {
+                return this.self();
+            }
+            return this.text(builder.toString());
+        }
+
         public T parseMode(String mode) {
             this.parseMode = mode;
             return this.self();
@@ -101,6 +109,10 @@ public abstract class AbstractTelegramClass {
 
         public T markdownSettings() {
             return this.parseMode(TelegramTextMode.Markdown);
+        }
+
+        public T markdownV2Settings() {
+            return this.parseMode(TelegramTextMode.MarkdownV2);
         }
 
         public T htmlSettings() {

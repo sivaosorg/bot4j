@@ -1,6 +1,7 @@
 package org.bot4j;
 
 import org.bot4j.telegram.common.Telegram4j;
+import org.bot4j.telegram.message.MarkdownBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.unify4j.model.response.WrapResponse;
@@ -15,7 +16,9 @@ public class Telegram4jTest {
 
     @Before
     public void setUp() {
-        telegram4j = new Telegram4j.Builder().botToken("6806983892:AAGcPZiuNktLFnyVWrRyOyYssECcVmNJSRo").chatId(-1002042977093L).text("Hello, World!").markdownSettings().build();
+        MarkdownBuilder builder = new MarkdownBuilder();
+        builder.text("Hello, World!");
+        telegram4j = new Telegram4j.Builder().botToken("6806983892:AAGcPZiuNktLFnyVWrRyOyYssECcVmNJSRo").chatId(-1002042977093L).text(builder.toString()).markdownSettings().build();
     }
 
     @Test
