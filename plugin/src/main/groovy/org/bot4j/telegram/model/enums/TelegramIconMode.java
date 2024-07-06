@@ -12,6 +12,7 @@ public enum TelegramIconMode {
     MESSAGE("\uD83D\uDCAC"),
     TS_1("\uD83C\uDFAF"),
     TS_2("\uD83D\uDDD3"),
+    TS_3("\uD83D\uDCCD"),
     NOTIFY("\uD83D\uDCE3"),
     TADA("\uD83C\uDF89"),
     SETTING("\uD83D\uDD27"),
@@ -22,7 +23,9 @@ public enum TelegramIconMode {
     BUG_1("\uD83D\uDC1E"),
     BUG_2("\uD83D\uDC7E"),
     BUG_3("\uD83E\uDEB2"),
-    BUG_4("\uD83D\uDC1B");
+    BUG_4("\uD83D\uDC1B"),
+    RIGHT_ARROW_1("\uD83D\uDC49"),
+    LEFT_ARROW_1("\uD83D\uDC48");
 
     private final String icon;
 

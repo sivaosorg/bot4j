@@ -27,6 +27,8 @@ public interface MessageBuilder<T> {
 
     T timestamp();
 
+    T timestampParenthesis();
+
     T vertical(String text);
 
     T vertical(Object value);
@@ -59,6 +61,7 @@ public interface MessageBuilder<T> {
 
     T preformatted(String lang, String text);
 
+    @SuppressWarnings({"UnusedReturnValue"})
     T preformatted(String lang, Object value);
 
     T preformatted(String lang, Path filename);
@@ -66,6 +69,8 @@ public interface MessageBuilder<T> {
     T link(String text, String url);
 
     T text(String text);
+
+    T text(String text, int repeat);
 
     T text(Object value);
 

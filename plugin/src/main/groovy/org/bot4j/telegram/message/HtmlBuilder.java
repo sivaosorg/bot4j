@@ -72,6 +72,15 @@ public class HtmlBuilder implements MessageBuilder<HtmlBuilder> {
     }
 
     @Override
+    public HtmlBuilder timestampParenthesis() {
+        String f = String.format("%s%s%s",
+                Ascii.Punctuation.LEFT_PARENTHESIS,
+                Time4j.format(new Date(), TimeFormatText.BIBLIOGRAPHY_COMPLETE_EPOCH_PATTERN),
+                Ascii.Punctuation.RIGHT_PARENTHESIS);
+        return this.code(f);
+    }
+
+    @Override
     public HtmlBuilder vertical(String text) {
         message.append(String4j.repeat(Ascii.Symbol.VERTICAL_LINE, 2))
                 .append(text)
@@ -405,6 +414,11 @@ public class HtmlBuilder implements MessageBuilder<HtmlBuilder> {
     public HtmlBuilder text(String text) {
         message.append(text);
         return this.space();
+    }
+
+    @Override
+    public HtmlBuilder text(String text, int repeat) {
+        return this.text(String4j.repeat(text, repeat));
     }
 
     @Override
