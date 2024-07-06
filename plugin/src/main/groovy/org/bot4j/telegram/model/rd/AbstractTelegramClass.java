@@ -2,6 +2,7 @@ package org.bot4j.telegram.model.rd;
 
 import org.bot4j.telegram.message.HtmlBuilder;
 import org.bot4j.telegram.message.MarkdownBuilder;
+import org.bot4j.telegram.message.MessageBuilder;
 import org.bot4j.telegram.model.builder.TelegramConnectionBuilder;
 import org.bot4j.telegram.model.builder.TelegramOptionBuilder;
 import org.bot4j.telegram.model.enums.TelegramTextMode;
@@ -100,6 +101,14 @@ public abstract class AbstractTelegramClass {
         }
 
         public T text(HtmlBuilder builder) {
+            if (builder == null) {
+                return this.self();
+            }
+            this.parseMode = TelegramTextMode.HTML.name().toLowerCase();
+            return this.text(builder.toString());
+        }
+
+        public T text(MessageBuilder<?> builder) {
             if (builder == null) {
                 return this.self();
             }

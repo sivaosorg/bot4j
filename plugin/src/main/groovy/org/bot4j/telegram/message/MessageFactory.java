@@ -2,11 +2,21 @@ package org.bot4j.telegram.message;
 
 public abstract class MessageFactory {
 
-    public static MarkdownBuilder createMarkdownBuilder() {
+    /**
+     * Create a MarkdownBuilder instance.
+     *
+     * @return MarkdownBuilder instance
+     */
+    public static MarkdownBuilder markdown() {
         return new MarkdownBuilder();
     }
 
-    public static HtmlBuilder createHtmlBuilder() {
+    /**
+     * Create a HtmlBuilder instance.
+     *
+     * @return HtmlBuilder instance
+     */
+    public static HtmlBuilder html() {
         return new HtmlBuilder();
     }
 }

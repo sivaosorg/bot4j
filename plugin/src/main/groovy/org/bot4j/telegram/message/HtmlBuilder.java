@@ -10,13 +10,15 @@ import java.nio.file.Path;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class HtmlBuilder {
+// @formatter:off
+public class HtmlBuilder implements MessageBuilder<HtmlBuilder> {
     protected final StringBuilder message;
 
     public HtmlBuilder() {
         this.message = new StringBuilder();
     }
 
+    @Override
     public HtmlBuilder icon(TelegramIconMode mode) {
         if (mode == null) {
             return this;
@@ -25,6 +27,7 @@ public class HtmlBuilder {
         return this.space();
     }
 
+    @Override
     public HtmlBuilder icon(TelegramIconMode mode, int repeat) {
         if (mode == null) {
             return this;
@@ -33,34 +36,42 @@ public class HtmlBuilder {
         return this.space();
     }
 
+    @Override
     public HtmlBuilder timestamp(Date date, TimeZone timezone) {
         return this.code(Time4j.format(date, timezone));
     }
 
+    @Override
     public HtmlBuilder timestamp(Date date, TimeZone timezone, String format) {
         return this.code(Time4j.format(date, timezone, format));
     }
 
+    @Override
     public HtmlBuilder timestamp(Date date, TimezoneType timezone) {
         return this.code(Time4j.format(date, timezone));
     }
 
+    @Override
     public HtmlBuilder timestamp(Date date, TimezoneType timezone, String format) {
         return this.code(Time4j.format(date, timezone, format));
     }
 
+    @Override
     public HtmlBuilder timestamp(Date date, String format) {
         return this.code(Time4j.format(date, format));
     }
 
+    @Override
     public HtmlBuilder timestamp(Date date) {
         return this.code(Time4j.format(date, TimeFormatText.BIBLIOGRAPHY_COMPLETE_EPOCH_PATTERN));
     }
 
+    @Override
     public HtmlBuilder timestamp() {
         return this.timestamp(new Date());
     }
 
+    @Override
     public HtmlBuilder vertical(String text) {
         message.append(String4j.repeat(Ascii.Symbol.VERTICAL_LINE, 2))
                 .append(text)
@@ -68,6 +79,7 @@ public class HtmlBuilder {
         return this.space();
     }
 
+    @Override
     public HtmlBuilder vertical(Object value) {
         if (value == null) {
             return this;
@@ -75,6 +87,7 @@ public class HtmlBuilder {
         return this.vertical(Class4j.isPrimitive(value.getClass()) ? value.toString() : Json4j.toJson(value));
     }
 
+    @Override
     public HtmlBuilder bold(String text) {
         message.append(Ascii.Symbol.LESS_THAN_SIGN)
                 .append(Ascii.Lowercase.LATIN_SMALL_LETTER_B)
@@ -87,6 +100,7 @@ public class HtmlBuilder {
         return this.space();
     }
 
+    @Override
     public HtmlBuilder bold(Object value) {
         if (value == null) {
             return this;
@@ -113,6 +127,7 @@ public class HtmlBuilder {
         return this.strong(Class4j.isPrimitive(value.getClass()) ? value.toString() : Json4j.toJson(value));
     }
 
+    @Override
     public HtmlBuilder italic(String text) {
         message.append(Ascii.Symbol.LESS_THAN_SIGN)
                 .append(Ascii.Lowercase.LATIN_SMALL_LETTER_I)
@@ -125,6 +140,7 @@ public class HtmlBuilder {
         return this.space();
     }
 
+    @Override
     public HtmlBuilder italic(Object value) {
         if (value == null) {
             return this;
@@ -151,6 +167,7 @@ public class HtmlBuilder {
         return this.em(Class4j.isPrimitive(value.getClass()) ? value.toString() : Json4j.toJson(value));
     }
 
+    @Override
     public HtmlBuilder underline(String text) {
         message.append(Ascii.Symbol.LESS_THAN_SIGN)
                 .append(Ascii.Lowercase.LATIN_SMALL_LETTER_U)
@@ -163,6 +180,7 @@ public class HtmlBuilder {
         return this.space();
     }
 
+    @Override
     public HtmlBuilder underline(Object value) {
         if (value == null) {
             return this;
@@ -189,6 +207,7 @@ public class HtmlBuilder {
         return this.ins(Class4j.isPrimitive(value.getClass()) ? value.toString() : Json4j.toJson(value));
     }
 
+    @Override
     public HtmlBuilder strikethrough(String text) {
         message.append(Ascii.Symbol.LESS_THAN_SIGN)
                 .append(Ascii.Lowercase.LATIN_SMALL_LETTER_S)
@@ -201,6 +220,7 @@ public class HtmlBuilder {
         return this.space();
     }
 
+    @Override
     public HtmlBuilder strikethrough(Object value) {
         if (value == null) {
             return this;
@@ -265,7 +285,8 @@ public class HtmlBuilder {
         return this.spoiler(Class4j.isPrimitive(value.getClass()) ? value.toString() : Json4j.toJson(value));
     }
 
-    public HtmlBuilder inlineUrl(String text, String url) {
+    @Override
+    public HtmlBuilder link(String text, String url) {
         message.append(Ascii.Symbol.LESS_THAN_SIGN)
                 .append(Ascii.Lowercase.LATIN_SMALL_LETTER_A)
                 .append(Ascii.Punctuation.SPACE)
@@ -284,6 +305,7 @@ public class HtmlBuilder {
         return this.space();
     }
 
+    @Override
     public HtmlBuilder code(String text) {
         message.append(Ascii.Symbol.LESS_THAN_SIGN)
                 .append("code")
@@ -296,6 +318,7 @@ public class HtmlBuilder {
         return this.space();
     }
 
+    @Override
     public HtmlBuilder code(Object value) {
         if (value == null) {
             return this;
@@ -303,6 +326,7 @@ public class HtmlBuilder {
         return this.code(Class4j.isPrimitive(value.getClass()) ? value.toString() : Json4j.toJson(value));
     }
 
+    @Override
     public HtmlBuilder code(Path filename) {
         try {
             String data = Os4j.readFileKeepFormat(filename);
@@ -312,6 +336,7 @@ public class HtmlBuilder {
         }
     }
 
+    @Override
     public HtmlBuilder preformatted(String text) {
         message.append(Ascii.Symbol.LESS_THAN_SIGN)
                 .append("pre")
@@ -324,6 +349,7 @@ public class HtmlBuilder {
         return this.space();
     }
 
+    @Override
     public HtmlBuilder preformatted(Object value) {
         if (value == null) {
             return this;
@@ -331,6 +357,7 @@ public class HtmlBuilder {
         return this.preformatted(Class4j.isPrimitive(value.getClass()) ? value.toString() : Json4j.toJson(value));
     }
 
+    @Override
     public HtmlBuilder preformatted(String lang, String text) {
         message.append(Ascii.Symbol.LESS_THAN_SIGN)
                 .append("pre")
@@ -356,6 +383,7 @@ public class HtmlBuilder {
         return this.space();
     }
 
+    @Override
     public HtmlBuilder preformatted(String lang, Object value) {
         if (value == null) {
             return this;
@@ -363,6 +391,7 @@ public class HtmlBuilder {
         return this.preformatted(lang, Class4j.isPrimitive(value.getClass()) ? value.toString() : Json4j.toJson(value));
     }
 
+    @Override
     public HtmlBuilder preformatted(String lang, Path filename) {
         try {
             String data = Os4j.readFileKeepFormat(filename);
@@ -372,11 +401,13 @@ public class HtmlBuilder {
         }
     }
 
+    @Override
     public HtmlBuilder text(String text) {
         message.append(text);
         return this.space();
     }
 
+    @Override
     public HtmlBuilder text(Object value) {
         if (value == null) {
             return this;
@@ -384,19 +415,23 @@ public class HtmlBuilder {
         return this.text(Class4j.isPrimitive(value.getClass()) ? value.toString() : Json4j.toJson(value));
     }
 
+    @Override
     public HtmlBuilder line() {
         return this.text(System.lineSeparator());
     }
 
+    @Override
     public HtmlBuilder line(int repeat) {
         return this.text(String4j.repeat(System.lineSeparator(), repeat));
     }
 
+    @Override
     public HtmlBuilder space() {
         message.append(Ascii.Punctuation.SPACE);
         return this;
     }
 
+    @Override
     public HtmlBuilder space(int repeat) {
         message.append(String4j.repeat(Ascii.Punctuation.SPACE, repeat));
         return this;
@@ -407,3 +442,4 @@ public class HtmlBuilder {
         return this.message.toString();
     }
 }
+// @formatter:on

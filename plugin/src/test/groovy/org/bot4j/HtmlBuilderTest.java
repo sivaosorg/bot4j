@@ -51,7 +51,7 @@ public class HtmlBuilderTest {
 
     @Test
     public void testInlineUrl() {
-        HtmlBuilder builder = new HtmlBuilder().inlineUrl("OpenAI", "https://www.openai.com");
+        HtmlBuilder builder = new HtmlBuilder().link("OpenAI", "https://www.openai.com");
         assertEquals("<a href=\\\"https://www.openai.com\\\">OpenAI</a> ", builder.toString());
     }
 
