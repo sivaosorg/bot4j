@@ -1,5 +1,6 @@
 package org.bot4j.telegram.message;
 
+import org.bot4j.telegram.model.enums.TelegramIconMode;
 import org.unify4j.common.*;
 import org.unify4j.model.c.Ascii;
 import org.unify4j.model.enums.TimezoneType;
@@ -14,6 +15,22 @@ public class HtmlBuilder {
 
     public HtmlBuilder() {
         this.message = new StringBuilder();
+    }
+
+    public HtmlBuilder icon(TelegramIconMode mode) {
+        if (mode == null) {
+            return this;
+        }
+        message.append(mode.getIcon());
+        return this.space();
+    }
+
+    public HtmlBuilder icon(TelegramIconMode mode, int repeat) {
+        if (mode == null) {
+            return this;
+        }
+        message.append(String4j.repeat(mode.getIcon(), repeat));
+        return this.space();
     }
 
     public HtmlBuilder timestamp(Date date, TimeZone timezone) {

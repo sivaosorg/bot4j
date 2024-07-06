@@ -1,5 +1,6 @@
 package org.bot4j.telegram.message;
 
+import org.bot4j.telegram.model.enums.TelegramIconMode;
 import org.unify4j.common.*;
 import org.unify4j.model.c.Ascii;
 import org.unify4j.model.enums.TimezoneType;
@@ -9,12 +10,27 @@ import java.nio.file.Path;
 import java.util.Date;
 import java.util.TimeZone;
 
-
 public class MarkdownBuilder {
     protected final StringBuilder message;
 
     public MarkdownBuilder() {
         this.message = new StringBuilder();
+    }
+
+    public MarkdownBuilder icon(TelegramIconMode mode) {
+        if (mode == null) {
+            return this;
+        }
+        message.append(mode.getIcon());
+        return this.space();
+    }
+
+    public MarkdownBuilder icon(TelegramIconMode mode, int repeat) {
+        if (mode == null) {
+            return this;
+        }
+        message.append(String4j.repeat(mode.getIcon(), repeat));
+        return this.space();
     }
 
     public MarkdownBuilder timestamp(Date date, TimeZone timezone) {
