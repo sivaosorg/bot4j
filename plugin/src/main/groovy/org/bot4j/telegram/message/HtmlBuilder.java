@@ -1,15 +1,47 @@
 package org.bot4j.telegram.message;
 
-import org.unify4j.common.Class4j;
-import org.unify4j.common.Json4j;
-import org.unify4j.common.String4j;
+import org.unify4j.common.*;
 import org.unify4j.model.c.Ascii;
+import org.unify4j.model.enums.TimezoneType;
+import org.unify4j.text.TimeFormatText;
+
+import java.nio.file.Path;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class HtmlBuilder {
     protected final StringBuilder message;
 
     public HtmlBuilder() {
         this.message = new StringBuilder();
+    }
+
+    public HtmlBuilder timestamp(Date date, TimeZone timezone) {
+        return this.code(Time4j.format(date, timezone));
+    }
+
+    public HtmlBuilder timestamp(Date date, TimeZone timezone, String format) {
+        return this.code(Time4j.format(date, timezone, format));
+    }
+
+    public HtmlBuilder timestamp(Date date, TimezoneType timezone) {
+        return this.code(Time4j.format(date, timezone));
+    }
+
+    public HtmlBuilder timestamp(Date date, TimezoneType timezone, String format) {
+        return this.code(Time4j.format(date, timezone, format));
+    }
+
+    public HtmlBuilder timestamp(Date date, String format) {
+        return this.code(Time4j.format(date, format));
+    }
+
+    public HtmlBuilder timestamp(Date date) {
+        return this.code(Time4j.format(date, TimeFormatText.BIBLIOGRAPHY_COMPLETE_EPOCH_PATTERN));
+    }
+
+    public HtmlBuilder timestamp() {
+        return this.timestamp(new Date());
     }
 
     public HtmlBuilder vertical(String text) {
@@ -254,6 +286,15 @@ public class HtmlBuilder {
         return this.code(Class4j.isPrimitive(value.getClass()) ? value.toString() : Json4j.toJson(value));
     }
 
+    public HtmlBuilder code(Path filename) {
+        try {
+            String data = Os4j.readFileKeepFormat(filename);
+            return this.code(data);
+        } catch (Exception e) {
+            return this;
+        }
+    }
+
     public HtmlBuilder preformatted(String text) {
         message.append(Ascii.Symbol.LESS_THAN_SIGN)
                 .append("pre")
@@ -303,6 +344,15 @@ public class HtmlBuilder {
             return this;
         }
         return this.preformatted(lang, Class4j.isPrimitive(value.getClass()) ? value.toString() : Json4j.toJson(value));
+    }
+
+    public HtmlBuilder preformatted(String lang, Path filename) {
+        try {
+            String data = Os4j.readFileKeepFormat(filename);
+            return this.preformatted(lang, data);
+        } catch (Exception e) {
+            return this;
+        }
     }
 
     public HtmlBuilder text(String text) {

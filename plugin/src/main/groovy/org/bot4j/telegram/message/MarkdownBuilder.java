@@ -1,9 +1,13 @@
 package org.bot4j.telegram.message;
 
-import org.unify4j.common.Class4j;
-import org.unify4j.common.Json4j;
-import org.unify4j.common.String4j;
+import org.unify4j.common.*;
 import org.unify4j.model.c.Ascii;
+import org.unify4j.model.enums.TimezoneType;
+import org.unify4j.text.TimeFormatText;
+
+import java.nio.file.Path;
+import java.util.Date;
+import java.util.TimeZone;
 
 
 public class MarkdownBuilder {
@@ -11,6 +15,34 @@ public class MarkdownBuilder {
 
     public MarkdownBuilder() {
         this.message = new StringBuilder();
+    }
+
+    public MarkdownBuilder timestamp(Date date, TimeZone timezone) {
+        return this.code(Time4j.format(date, timezone));
+    }
+
+    public MarkdownBuilder timestamp(Date date, TimeZone timezone, String format) {
+        return this.code(Time4j.format(date, timezone, format));
+    }
+
+    public MarkdownBuilder timestamp(Date date, TimezoneType timezone) {
+        return this.code(Time4j.format(date, timezone));
+    }
+
+    public MarkdownBuilder timestamp(Date date, TimezoneType timezone, String format) {
+        return this.code(Time4j.format(date, timezone, format));
+    }
+
+    public MarkdownBuilder timestamp(Date date, String format) {
+        return this.code(Time4j.format(date, format));
+    }
+
+    public MarkdownBuilder timestamp(Date date) {
+        return this.code(Time4j.format(date, TimeFormatText.BIBLIOGRAPHY_COMPLETE_EPOCH_PATTERN));
+    }
+
+    public MarkdownBuilder timestamp() {
+        return this.timestamp(new Date());
     }
 
     public MarkdownBuilder vertical(String text) {
@@ -97,6 +129,15 @@ public class MarkdownBuilder {
         return this.code(Class4j.isPrimitive(value.getClass()) ? value.toString() : Json4j.toJson(value));
     }
 
+    public MarkdownBuilder code(Path filename) {
+        try {
+            String data = Os4j.readFileKeepFormat(filename);
+            return this.code(data);
+        } catch (Exception e) {
+            return this;
+        }
+    }
+
     public MarkdownBuilder preformatted(String text) {
         message.append(String4j.repeat(Ascii.Symbol.GRAVE_ACCENT, 3))
                 .append(text)
@@ -125,6 +166,15 @@ public class MarkdownBuilder {
             return this;
         }
         return this.preformatted(lang, Class4j.isPrimitive(value.getClass()) ? value.toString() : Json4j.toJson(value));
+    }
+
+    public MarkdownBuilder preformatted(String lang, Path filename) {
+        try {
+            String data = Os4j.readFileKeepFormat(filename);
+            return this.preformatted(lang, data);
+        } catch (Exception e) {
+            return this;
+        }
     }
 
     public MarkdownBuilder link(String text, String url) {
