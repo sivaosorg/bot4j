@@ -34,6 +34,8 @@ public class HttpBuilder extends MarkdownBuilder {
         public static final String HEADER_INDEX = "header_index";
         public static final String STATUS_INDEX = "code_index";
         public static final String API_DESC_INDEX = "api_desc_index";
+        public static final String CAUSE_INDEX = "cause_index";
+        public static final String REQUEST_ID_INDEX = "request_id_index";
     }
 
     public HttpBuilder apiDesc(String desc) {
@@ -136,6 +138,29 @@ public class HttpBuilder extends MarkdownBuilder {
         return this.timezone(timezone.getTimeZoneId());
     }
 
+    public HttpBuilder cause(Throwable e) {
+        if (e == null) {
+            return this;
+        }
+        return this.cause(e.getMessage());
+    }
+
+    public HttpBuilder cause(String e) {
+        if (String4j.isEmpty(e)) {
+            return this;
+        }
+        this.placeholders.put(Index.CAUSE_INDEX, e);
+        return this;
+    }
+
+    public HttpBuilder requestId(String requestId) {
+        if (String4j.isEmpty(requestId)) {
+            return this;
+        }
+        this.placeholders.put(Index.REQUEST_ID_INDEX, requestId);
+        return this;
+    }
+
     @SuppressWarnings({"unchecked"})
     @Override
     public String toString() {
@@ -180,6 +205,9 @@ public class HttpBuilder extends MarkdownBuilder {
             this.code(String4j.trimWhitespace(url));
         }
         this.line(2);
+        if (this.placeholders.containsKey(Index.REQUEST_ID_INDEX)) {
+            this.bold("SSID:").code((String) this.placeholders.get(Index.REQUEST_ID_INDEX)).line();
+        }
         if (Object4j.allNotNull(this.start)) {
             if (String4j.isEmpty(this.timezone)) {
                 this.bold("RFT:").timestamp(this.start).line();
@@ -216,6 +244,10 @@ public class HttpBuilder extends MarkdownBuilder {
         if (this.placeholders.containsKey(Index.RESPONSE_INDEX)) {
             Map<String, Object> request = (Map<String, Object>) Json4j.toMapFrom(this.placeholders.get(Index.RESPONSE_INDEX));
             this.bold("Resp:").preformatted("json", request);
+        }
+        if (this.placeholders.containsKey(Index.CAUSE_INDEX)) {
+            this.line();
+            this.bold("Ex:").preformatted("java", (String) this.placeholders.get(Index.CAUSE_INDEX));
         }
         return super.toString();
     }
