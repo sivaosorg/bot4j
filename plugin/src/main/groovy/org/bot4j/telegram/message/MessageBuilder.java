@@ -68,6 +68,10 @@ public interface MessageBuilder<T> {
 
     T link(String text, String url);
 
+    T tag(String... tags);
+
+    T commercialAt(String... values);
+
     T text(String text);
 
     T text(String text, int repeat);

@@ -7,6 +7,7 @@ import org.unify4j.model.enums.TimezoneType;
 import org.unify4j.text.TimeFormatText;
 
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -238,6 +239,32 @@ public class MarkdownBuilder implements MessageBuilder<MarkdownBuilder> {
                 .append(Ascii.Punctuation.LEFT_PARENTHESIS)
                 .append(url)
                 .append(Ascii.Punctuation.RIGHT_PARENTHESIS);
+        return this.space();
+    }
+
+    @Override
+    public MarkdownBuilder tag(String... tags) {
+        if (Array4j.isEmpty(tags)) {
+            return this;
+        }
+        Arrays.stream(tags).toList().forEach(e -> {
+            message.append(Ascii.Punctuation.NUMBER_SIGN)
+                    .append(e)
+                    .append(Ascii.Punctuation.SPACE);
+        });
+        return this.space();
+    }
+
+    @Override
+    public MarkdownBuilder commercialAt(String... values) {
+        if (Array4j.isEmpty(values)) {
+            return this;
+        }
+        Arrays.stream(values).toList().forEach(e -> {
+            message.append(Ascii.Punctuation.COMMERCIAL_AT)
+                    .append(e)
+                    .append(Ascii.Punctuation.SPACE);
+        });
         return this.space();
     }
 
