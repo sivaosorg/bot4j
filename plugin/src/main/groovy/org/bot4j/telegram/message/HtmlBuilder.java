@@ -320,7 +320,7 @@ public class HtmlBuilder implements MessageBuilder<HtmlBuilder> {
         if (Array4j.isEmpty(tags)) {
             return this;
         }
-        Arrays.stream(tags).toList().forEach(e -> {
+        Arrays.stream(tags).forEach(e -> {
             message.append(Ascii.Punctuation.NUMBER_SIGN)
                     .append(e)
                     .append(Ascii.Punctuation.SPACE);
@@ -333,7 +333,7 @@ public class HtmlBuilder implements MessageBuilder<HtmlBuilder> {
         if (Array4j.isEmpty(values)) {
             return this;
         }
-        Arrays.stream(values).toList().forEach(e -> {
+        Arrays.stream(values).forEach(e -> {
             message.append(Ascii.Punctuation.COMMERCIAL_AT)
                     .append(e)
                     .append(Ascii.Punctuation.SPACE);
